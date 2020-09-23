@@ -18,3 +18,6 @@ container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
 );
+
+// import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
+// import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
