@@ -75,16 +75,17 @@ describe('ResetPasswordService', () => {
 
     const { token } = await fakeUserTokensRepository.generate(user.id);
 
-    const generateHash = jest.spyOn(fakeHashProvider, 'generateHash');
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      const customDate = new Date();
 
-    await resetPassword.execute({
-      password: '123123',
-      token,
+      return customDate.setHours(customDate.getHours() + 3);
     });
 
-    const updatedUser = await fakeUsersRepository.findById(user.id);
-
-    expect(generateHash).toHaveBeenCalledWith('123123');
-    expect(updatedUser?.password).toBe('123123');
+    await expect(
+      resetPassword.execute({
+        password: '123123',
+        token,
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
